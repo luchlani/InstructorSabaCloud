@@ -13,25 +13,16 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringEscapeUtils;
-
-import com.arc.instructor.SabaWrapper;
-import com.arc.instructor.RosterEntryDetail;
-import com.saba.ARC.custom.RosterEntryComponent;
-import com.saba.ARC.custom.OfferingSession;
 import com.arc.instructor.model.CourseComponent;
 import com.arc.instructor.model.CourseRecord;
 import com.arc.instructor.model.CourseRecordSearch;
 import com.arc.instructor.model.People;
 import com.arc.instructor.model.Student;
 import com.arc.instructor.model.User;
-import com.arc.instructor.model.OfferingSearch;
-import com.arc.instructor.model.OfferingDetail;
-import com.saba.exception.SabaException;
+
 
 public class SabaHelper {
 	
@@ -41,9 +32,6 @@ public class SabaHelper {
 
 		try{
 			getSabaWrapper().authenticateUser(username, password);
-		} catch(SabaException s){
-			message = s.getMessage();
-			s.printStackTrace();
 		} catch(Exception e){
 			message = e.getMessage();
 			e.printStackTrace();
@@ -87,13 +75,10 @@ public class SabaHelper {
 			} else if (rtn == 1) {
 				msg = "Successful";
 			} else if (rtn >= 2) {
-				msg = "Multiple occurrences of email was found in the system.  Please contact your administrator.";
+				msg = "Multiple occurrences of email was found in the system.  Please contact your administrator."; 
 			} else {
 				msg = "Error resetting password.  Please contact your administrator.";
 			}
-		} catch (SabaException e) {
-			msg = e.getMessage();
-			e.printStackTrace();
 		} catch (Exception e) {
 			msg = e.getMessage();
 			e.printStackTrace();
@@ -109,8 +94,6 @@ public class SabaHelper {
 		try {
 			msg = getSabaWrapper().needPasswordChange();
 			//System.out.println("needPasswordChange: " + msg);
-		} catch (SabaException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -124,9 +107,6 @@ public class SabaHelper {
 		
 		try {
 			getSabaWrapper().changePassword(oldPassword, newPassword);
-		} catch (SabaException e) {
-			msg = e.getMessage();
-			e.printStackTrace();
 		} catch (Exception e) {
 			msg = e.getMessage();
 			e.printStackTrace();
@@ -141,7 +121,7 @@ public class SabaHelper {
 		
 		try {
 			personID = getSabaWrapper().getPersonId();
-		} catch(SabaException e){
+		} catch(Exception e){
 			e.printStackTrace();
 		}
 		
@@ -275,39 +255,6 @@ public class SabaHelper {
 		for(String[] course : courses)
 		{
 			list.add( dropdown(course[0], course[1]) );
-		}
-		return list;
-	}
-	
-	public List<DropDown> getCoursesForOnlineOfferings() throws SabaException
-	{
-		List<DropDown> list = new ArrayList<DropDown>();
-		Map<String, String> courses = getSabaWrapper().getCoursesForOnlineOfferings();
-		
-		for(Map.Entry<String, String> entry : courses.entrySet())
-		{
-			list.add( dropdown(entry.getKey(), entry.getValue()) );
-		}
-		return list;
-	}
-	
-	
-	
-	public List<DropDown> getSessionDeliveryTypes(String courseId)
-	{
-		Map<String, String> deliveryTypes = findSessionDeliveryTypes(courseId);
-		
-		List<DropDown> list = new ArrayList<DropDown>();
-		if(deliveryTypes.isEmpty())
-		{
-			list.add(dropdown("", " - Select Course First - "));
-			return list;
-		}
-		
-		list.add(dropdown("", " - Select Delivery Type - "));
-		for(Map.Entry<String, String> entry : deliveryTypes.entrySet())
-		{
-			list.add( dropdown(entry.getKey(), entry.getValue()) );
 		}
 		return list;
 	}
@@ -592,10 +539,6 @@ public class SabaHelper {
 		
 		try {
 			getSabaWrapper().applyCouponToCrs(crsID, code);
-		} catch (SabaException e) {
-			msg = e.getMessage();
-			//System.out.println("applyCoupontoCRS() SabaException message="+msg); 
-			e.printStackTrace();
 		} catch (Exception e) {
 			msg = e.getMessage();
 			//System.out.println("applyCoupontoCRS() Exception message="+msg);
@@ -612,10 +555,6 @@ public class SabaHelper {
 		
 		try {
 			getSabaWrapper().removeCouponFromCrs(crsID);
-		} catch (SabaException e) {
-			msg = e.getMessage();
-			//System.out.println("applyCoupontoCRS() SabaException message="+msg);
-			e.printStackTrace();
 		} catch (Exception e) {
 			msg = e.getMessage();
 			//System.out.println("applyCoupontoCRS() Exception message="+msg);
@@ -634,7 +573,7 @@ public class SabaHelper {
 		
 		try {
 			sabaResponse = getSabaWrapper().getPurchaseOrder(orgID, amount);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -683,7 +622,7 @@ public class SabaHelper {
 		try {
 			// amount passed in is 0.0 since we want a list of all purchase orders returned
 			sabaResponse = getSabaWrapper().getPurchaseOrder(orgID, "0.0");
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -711,10 +650,6 @@ public class SabaHelper {
 		String msg = "Success";
 		try {
 			getSabaWrapper().addPurchaseOrder(crsID, purchaseOrderID);
-		} catch (SabaException e) {
-			msg = e.getMessage();
-			//System.out.println("addPurchaseOrder() SabaException message="+msg);
-			e.printStackTrace();
 		} catch (Exception e) {
 			msg = e.getMessage();
 			//System.out.println("addPurchaseOrder() Exception message="+msg);
@@ -732,7 +667,7 @@ public class SabaHelper {
 		{
 			valuesMap = getSabaWrapper().getCCStaticValues(crsId);
 		}
-		catch(SabaException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -751,9 +686,6 @@ public class SabaHelper {
 		try {
 			sabaResponse = getSabaWrapper().getCCTransactionSignature(amount, currency, transactionType, crsId);
 			//System.out.println("getCCTransactionSignature() sabaResponse="+sabaResponse);
-		} catch (SabaException e) {
-			//System.out.println("getCCTransactionSignature() SabaException message="+e.getMessage());
-			e.printStackTrace();
 		} catch (Exception e) {
 			//System.out.println("getCCTransactionSignature() Exception message="+e.getMessage());
 			e.printStackTrace();
@@ -781,10 +713,6 @@ public class SabaHelper {
 		String msg = "Success";
 		try {
 			getSabaWrapper().insertCCTrack(crsId);
-		} catch (SabaException e) {
-			msg = e.getMessage();
-			//System.out.println("insertCCTrack() SabaException message="+e.getMessage());
-			e.printStackTrace();
 		} catch (Exception e) {
 			msg = e.getMessage();
 			//System.out.println("insertCCTrack() Exception message="+e.getMessage());
@@ -799,10 +727,6 @@ public class SabaHelper {
 		String msg = "Success";
 		try {
 			getSabaWrapper().paymentPendingNotification(crsId);
-		} catch (SabaException e) {
-			msg = e.getMessage();
-			//System.out.println("paymentPendingNotification() SabaException message="+e.getMessage());
-			e.printStackTrace();
 		} catch (Exception e) {
 			msg = e.getMessage();
 			//System.out.println("paymentPendingNotification() Exception message="+e.getMessage());
@@ -817,9 +741,6 @@ public class SabaHelper {
 		String msg = "Success";
 		try {
 			getSabaWrapper().approveNoCostNoPaymentCR(crsId);
-		} catch (SabaException e) {
-			msg = e.getMessage();
-			e.printStackTrace();
 		} catch (Exception e) {
 			msg = e.getMessage();
 			e.printStackTrace();
@@ -827,17 +748,14 @@ public class SabaHelper {
 		return msg;
 	}
 	
-	public String paymentProcessing(HttpServletRequest request) {
+	
+  public String paymentProcessing(HttpServletRequest request) {
 		//System.out.println("paymentProcessing()");
 		
 		String msg = "Success";
 		try {
 			List result = getSabaWrapper().paymentProcessing(request);
 			//System.out.println("paymentProcessing() result: "+result);
-		} catch (SabaException e) {
-			msg = e.getMessage();
-			//System.out.println("paymentProcessing() SabaException message="+e.getMessage());
-			e.printStackTrace();
 		} catch (Exception e) {
 			msg = e.getMessage();
 			//System.out.println("paymentProcessing() Exception message="+e.getMessage());
@@ -890,7 +808,7 @@ public class SabaHelper {
 		String msg = message;
 		
 		Throwable rootCause = getRootCause(e);
-		if(rootCause instanceof SabaException)
+		if(rootCause instanceof Exception)
 		{
 			msg = rootCause.getMessage();
 		}
@@ -925,9 +843,6 @@ public class SabaHelper {
 			//System.out.println("findUser() email="+email);
 			sabaResponse = getSabaWrapper().findUser(email);
 			//System.out.println("findUser() sabaResponse="+sabaResponse);
-		} catch (SabaException e) {
-			//System.out.println("findUser() SabaException message="+e.getMessage());
-			e.printStackTrace();
 		} catch (Exception e) {
 			//System.out.println("findUser() Exception message="+e.getMessage());
 			e.printStackTrace();
@@ -946,52 +861,6 @@ public class SabaHelper {
 		user.setLastName(sabaResponse.get("last_name"));
 		
 		return user;
-	}
-	
-	public List<RosterEntryDetail> getRoster(String offeringId) throws SabaException
-	{
-		return getSabaWrapper().getRoster(offeringId);
-	}
-	
-	public List<Map<String, String>> getCompletedRegistrations(String offeringId) throws SabaException
-	{
-		return getSabaWrapper().getCompletedRegistrations(offeringId);
-	}
-	
-	public void markDelivered(String offeringId) throws SabaException
-	{
-		getSabaWrapper().markDelivered(offeringId);
-	}
-	
-	public void saveRoster(Map<String, List<RosterEntryComponent>> allModifiedCompletions) throws SabaException
-	{
-		getSabaWrapper().saveRoster(allModifiedCompletions);
-	}
-	
-	public List<DropDown> getCourseCategoriesForILT_APTool() throws SabaException
-	{
-		List<String[]> categories = getSabaWrapper().getCourseCategories(false);//false=ILT
-		
-		List<DropDown> ddList = new ArrayList<DropDown>();
-		ddList.add( dropdown("", "Select One") );
-		for (String[] category : categories)
-		{
-		    ddList.add( dropdown(category[0], category[1]) );
-		}
-		return ddList;
-	}
-	
-	public List<DropDown> getCourseCategoriesForBlended_APTool() throws SabaException
-	{
-		List<String[]> categories = getSabaWrapper().getCourseCategories(true);//true=Blended
-		
-		List<DropDown> ddList = new ArrayList<DropDown>();
-		ddList.add( dropdown("", "Select One") );
-		for (String[] category : categories)
-		{
-		    ddList.add( dropdown(category[0], category[1]) );
-		}
-		return ddList;
 	}
 	
 	public ArrayList<DropDown> getCourseCategoryList(){
@@ -4785,43 +4654,6 @@ public class SabaHelper {
 
 	}
 	
-	public  ArrayList<OfferingSearch> getOfferingSearchResultSet(String personID) { 
-		
-		ArrayList<OfferingSearch> searchResultSet = new ArrayList<OfferingSearch>();
-		Map<String, String[]> sabaResponse = new HashMap<String, String[]>();
-		sabaResponse = findSabaUsersOfferings(personID);
-		 
-		for (Map.Entry<String, String[]> entry : sabaResponse.entrySet())
-		{
-			OfferingSearch offeringSearch = new OfferingSearch(entry.getKey());
-			String[] data = entry.getValue();
-	    	for(int d=0; d<data.length; d++){
-	    		switch (d) {
-		            case 0: offeringSearch.setOfferingNo(data[d]);
-		                    break;
-		            case 1: offeringSearch.setCourseName(data[d]);
-			                break;
-			        case 2: offeringSearch.setDeliveryType(data[d]);
-			                break;        
-		            case 4: offeringSearch.setOrgName(data[d]);
-    						break;  
-		            case 5: offeringSearch.setStartDate(data[d]);
-	        				break; 
-		            case 7: offeringSearch.setStatus(data[d]);
-	        				break;
-		            default:
-		            		break;
-	    		}
-	    	}
-	    	
-	    	searchResultSet.add(offeringSearch);
-			
-		}
-		return searchResultSet;
-	}
-	
-
-	
 	public  CourseRecord  getCourseRecordStudents(CourseRecord courseRecord) { 
 		
 		Map<String, Map<String, String>> sabaResponse = new HashMap<String, Map<String, String>>();
@@ -4832,7 +4664,7 @@ public class SabaHelper {
 		//System.out.println("SabaHelper getCourseRecordStudents SheetNumberID: " + courseRecord.getSheetNumberID());
 		try {
 			sabaResponse = getSabaWrapper().getStudents(courseRecord.getSheetNumberID());
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -4901,7 +4733,7 @@ public class SabaHelper {
 
 		try {
 			sabaResponse = getSabaWrapper().addStudents(sheetNumberID, studentDetail, transcripts);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			sabaResponse = "Error";
 			e.printStackTrace();
@@ -4938,7 +4770,7 @@ public class SabaHelper {
 			try {
 				getSabaWrapper().updateStudents(sheetNumberID, studentDetail, transcripts);
 				sabaResponse = student.getId();
-			} catch (SabaException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				sabaResponse = "Error";
 				e.printStackTrace();
@@ -4959,7 +4791,7 @@ public class SabaHelper {
 		
 		try {
 			getSabaWrapper().removeStudents(sheetNumberID, studentID);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			successful = false;
 			e.printStackTrace();
@@ -4978,7 +4810,7 @@ public class SabaHelper {
 			try {
 				sabaResponse = getSabaWrapper().findInstructorForCrs(courseRecord.getSheetNumberID());
 				//System.out.println("Saba Find Instructor Response: " + sabaResponse);
-			} catch (SabaException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -5088,8 +4920,6 @@ public class SabaHelper {
 		try {
 			sabaResponse = getSabaWrapper().findInstructor(sabaRequest);
 			//System.out.println("findSabaOrganizationsInstructors Response: " + sabaResponse);
-		} catch (SabaException s) {
-			s.printStackTrace();
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -5127,25 +4957,6 @@ public class SabaHelper {
     	return instructors;
 	}
 	
-	public void deleteInstructorFromOffering(String offeringId, String personId) throws Exception
-	{
-		getSabaWrapper().removeInstructorFromOffering(offeringId, personId);
-	}
-	
-	public void deleteAllInstructorsFromOffering(String offeringId) throws Exception
-	{
-		Map<String, String[]> sabaInstructors = getSabaWrapper().findInstructorForOffering(offeringId);
-		//Instructors
-		for(String personId : sabaInstructors.keySet())
-		{
-			deleteInstructorFromOffering(offeringId, personId);
-		}
-	}
-	
-	public void addInstructorToOffering(String offeringId, String personId) throws Exception
-	{
-		getSabaWrapper().addInstructorToOffering(offeringId, personId);
-	}
 	
 	public boolean removeCourseRecordInstructor(String sheetNumberID, String personID){
 		boolean successful = false;
@@ -5153,8 +4964,6 @@ public class SabaHelper {
 		try {
 			getSabaWrapper().removeInstructor(sheetNumberID, personID);
 			successful = true;
-		} catch (SabaException s) {
-			s.printStackTrace();
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -5168,8 +4977,6 @@ public class SabaHelper {
 		try {
 			getSabaWrapper().addInstructor(sheetNumberID, personID);
 			successful = true;
-		} catch (SabaException s) {
-			s.printStackTrace();
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -5183,7 +4990,7 @@ public class SabaHelper {
 		try {
 			sabaResponse = getSabaWrapper().findCRSForLandingPage(personID, !showAll);
 			//System.out.println("SabaHelper findCRSForLandingPage Contact (" + personID + ") Search Result size : " + sabaResponse.size());
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5197,7 +5004,7 @@ public class SabaHelper {
 		try {
 			sabaResponse = getSabaWrapper().findFeeBasedCRSForLandingPage(personID, !showAll);
 			//System.out.println("SabaHelper findCRSForLandingPage Contact (" + personID + ") Search Result size : " + sabaResponse.size());
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5210,7 +5017,7 @@ public class SabaHelper {
 		
 		try {
 			sabaResponse = getSabaWrapper().findOfferings(personID);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5224,7 +5031,7 @@ public class SabaHelper {
         try {
             sabaResponse = getSabaWrapper().findFacilityFeeCRSForLandingPage(personID, !showAll);
             //System.out.println("SabaHelper findCRSForLandingPage Contact (" + personID + ") Search Result size : " + sabaResponse.size());
-        } catch (SabaException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         
@@ -5241,7 +5048,7 @@ public class SabaHelper {
 		try {
 			sabaResponse = getSabaWrapper().getCourseComponent(courseID);
 			//System.out.println("SabaHelper getCourseComponent CourseID (" + courseID + ") Course Component Map: " + sabaResponse);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5267,7 +5074,7 @@ public class SabaHelper {
 			required =  getSabaWrapper().isSkipStudentsAllowed(courseID);
 			//System.out.println("SabaHelper isCourseRequiresStudentDetails CourseID (" + courseID + ") : " + required);
 
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5280,7 +5087,7 @@ public class SabaHelper {
 		
 		try {
 			sabaResponse = getSabaWrapper().findCourse();
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5293,7 +5100,7 @@ public class SabaHelper {
         
         try {
             sabaResponse = getSabaWrapper().findCourse(courseCategory);
-        } catch (SabaException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         
@@ -5306,7 +5113,7 @@ public class SabaHelper {
         
         try {
             sabaResponse = getSabaWrapper().findCoursesForFacilityFee();
-        } catch (SabaException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         
@@ -5319,7 +5126,7 @@ public class SabaHelper {
 		
 		try {
 			sabaResponse = getSabaWrapper().findCourseForFeeBasedCrs(courseCategory);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -5333,7 +5140,7 @@ public class SabaHelper {
 		
 		try {
 			sabaResponse = getSabaWrapper().findCourseForAquatics();
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5347,7 +5154,7 @@ public class SabaHelper {
 		try {
 			sabaResponse = getSabaWrapper().getOrgsForContact(personID);
 			//System.out.println("SabaHelper findSabaOrganizations Contact (" + personID + ") Organization Map: " + sabaResponse);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5361,7 +5168,7 @@ public class SabaHelper {
 		try {
 			sabaResponse = getSabaWrapper().getOrgsForContactWUnitCode(personID);
 			//System.out.println("SabaHelper findSabaOrganizationsWithUnitCode Contact (" + personID + ") Organization Map: " + sabaResponse);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5375,7 +5182,7 @@ public class SabaHelper {
 		
 		try {
 			sabaResponse = getSabaWrapper().getSessionDeliveryTypes(courseId);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5389,7 +5196,7 @@ public class SabaHelper {
 		
 		try {
 			sabaResponse = getSabaWrapper().getFacilities(orgId);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5403,7 +5210,7 @@ public class SabaHelper {
 		
 		try {
 			sabaResponse = getSabaWrapper().getCoursesForSessionOfferings(isBlended, category);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5418,7 +5225,7 @@ public class SabaHelper {
 		
 		try {
 			getSabaWrapper().crsPreCreateNotification(sheetNumberID);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			message = "Error";
 			e.printStackTrace();
 		}
@@ -5434,7 +5241,7 @@ public class SabaHelper {
 		
 		try {
 			getSabaWrapper().deleteCRS(sheetNumberID);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			message = "Error";
 			e.printStackTrace();
 		}
@@ -5523,9 +5330,6 @@ public class SabaHelper {
 		try {
 			getSabaWrapper().updateCrs(courseRecordSheet);
 			sabaResponse = "Successful";
-		} catch (SabaException s) {
-			sabaResponse = "Error";
-			s.printStackTrace();
 		} catch (Exception e) {
 			sabaResponse = "Error";
 			e.printStackTrace();
@@ -5565,9 +5369,6 @@ public class SabaHelper {
         try {
             getSabaWrapper().updateCrs(courseRecordSheet);
             sabaResponse = "Successful";
-        } catch (SabaException s) {
-            sabaResponse = "Error";
-            s.printStackTrace();
         } catch (Exception e) {
             sabaResponse = "Error";
             e.printStackTrace();
@@ -5622,9 +5423,6 @@ public class SabaHelper {
 		try {
 			//System.out.println("SabaHelper createAnonymousNonFeeCrs");
 			sabaResponse = getSabaWrapper().createAnonymousNonFeeCrs(courseRecordSheet, courseRecordSheetStatistics, courseRecordInstructorList);
-		} catch (SabaException s) {
-			sabaResponse = "Error";
-			s.printStackTrace();
 		} catch (Exception e) {
 			sabaResponse = "Error";
 			e.printStackTrace();
@@ -5655,9 +5453,6 @@ public class SabaHelper {
         
         try {
             sabaResponse = getSabaWrapper().createFacilityFeeCRS(courseRecordSheet);
-        } catch (SabaException s) {
-            sabaResponse = "Error";
-            s.printStackTrace();
         } catch (Exception e) {
             sabaResponse = "Error";
             e.printStackTrace();
@@ -5666,75 +5461,7 @@ public class SabaHelper {
         return sabaResponse;
     }
     
-    public String createSessionOffering(OfferingDetail offeringDetail) throws Exception
-	{
-		List<String> instructorList = new ArrayList<String>();
-		List<Map<String, String>> sessionList = new ArrayList<Map<String, String>>();
-		Map<String,String> sabaOffering = new HashMap<String,String>();
-		
-		sabaOffering.put("contactId",offeringDetail.getContactId());
-		sabaOffering.put("orgId",offeringDetail.getOrgId());
-		sabaOffering.put("courseId", offeringDetail.getCourseId());
-		sabaOffering.put("isBlended", offeringDetail.getBlended());
-		sabaOffering.put("startDate", offeringDetail.getStartDate());
-		sabaOffering.put("maxCount", offeringDetail.getMaxCount());
-		sabaOffering.put("facility", offeringDetail.getFacilityId());
-		sabaOffering.put("poId", offeringDetail.getPoId());
-		sabaOffering.put("couponCode", offeringDetail.getCouponCode());
-		
-        for (People instructor : offeringDetail.getInstructors()) 
-		{
-        	instructorList.add(instructor.getId());
-        }
-        
-        //System.out.println(offeringDetail.getContactId() + ":" + offeringDetail.getOrgId() + ":" + offeringDetail.getCourseId() + ":" + offeringDetail.getDeliveryType() + ":" + offeringDetail.getStartDate() + ":" + offeringDetail.getMaxCount() + ":" + offeringDetail.getFacilityId() + ":" + offeringDetail.getPoId());  
-		return getSabaWrapper().createSessionOffering(sabaOffering, instructorList, offeringDetail.getSessions());
-	}
-	
-	public void updateSessionOffering(OfferingDetail offeringDetail) throws Exception
-	{
-		Map<String,String> sabaOffering = new HashMap<String,String>();
-		
-		sabaOffering.put("offeringId", offeringDetail.getSabaOfferingId());
-		sabaOffering.put("orgId", offeringDetail.getOrgId());
-		sabaOffering.put("startDate", offeringDetail.getStartDate());
-		sabaOffering.put("maxCount", offeringDetail.getMaxCount());
-		sabaOffering.put("facility", offeringDetail.getFacilityId());
-		sabaOffering.put("poId", offeringDetail.getPoId());
-		sabaOffering.put("couponCode", offeringDetail.getCouponCode());
-		
-		getSabaWrapper().updateSessionOffering(sabaOffering, offeringDetail.getSessions());
-	}
-	
-	
-	public String createOnlineOffering(OfferingDetail offeringDetail) throws Exception
-	{
-		Map<String,String> sabaOffering = new HashMap<String,String>();
-		
-		sabaOffering.put("contactId",offeringDetail.getContactId());
-		sabaOffering.put("orgId",offeringDetail.getOrgId());
-		sabaOffering.put("courseId", offeringDetail.getCourseId());
-		sabaOffering.put("availFrom", offeringDetail.getAvailFrom());
-		sabaOffering.put("discFrom", offeringDetail.getDiscFrom());
-		sabaOffering.put("poId", offeringDetail.getPoId());
-		
-		return getSabaWrapper().createOnlineOffering(sabaOffering);
-	}
-	
-	public void updateOnlineOffering(OfferingDetail offeringDetail) throws Exception
-	{
-		Map<String,String> sabaOffering = new HashMap<String,String>();
-		
-		sabaOffering.put("offeringId", offeringDetail.getSabaOfferingId());
-		sabaOffering.put("orgId", offeringDetail.getOrgId());
-		sabaOffering.put("availFrom", offeringDetail.getAvailFrom());
-		sabaOffering.put("discFrom", offeringDetail.getDiscFrom());
-		sabaOffering.put("poId", offeringDetail.getPoId());
-		
-		getSabaWrapper().updateOnlineOffering(sabaOffering);
-	}
-	
-	
+
 	public  ArrayList<String> getCityStateCounty(String zipCode){
 		
 		ArrayList<String> cityStateCounty = new ArrayList<String>();
@@ -5742,7 +5469,7 @@ public class SabaHelper {
 		
 		try {
 			sabaResponse = getSabaWrapper().findState(zipCode);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5767,7 +5494,7 @@ public class SabaHelper {
 
 		try {
 			sabaResponse = getSabaWrapper().findCRS(sheetNumberID);
-		} catch (SabaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -5886,103 +5613,10 @@ public class SabaHelper {
 	}
 	
 	
-	public OfferingDetail getSessionOfferingDetail(String offeringId) throws Exception
-	{
-		Map<String, String> sabaResponse = new HashMap<String, String>();
-		Map<String, String[]> sabaInstructors = new HashMap<String, String[]>();
-		List<OfferingSession> sessions = new ArrayList<OfferingSession>();
-		OfferingDetail offDetail = new OfferingDetail();
-
-		sabaResponse = getSabaWrapper().getSessionOfferingDetail(offeringId);
-		sabaInstructors = getSabaWrapper().findInstructorForOffering(offeringId);
-		sessions = getSabaWrapper().findSessionsForOffering(offeringId);
-		
-		setOffDetailFields(sabaResponse, offeringId, offDetail);
-		offDetail.setDeliveryType(sabaResponse.get("deliveryType"));
-		offDetail.setBlended(sabaResponse.get("isBlended"));
-		offDetail.setStartDate(sabaResponse.get("startDate"));
-		offDetail.setFacilityId(sabaResponse.get("facility"));
-		offDetail.setFacilityName(sabaResponse.get("facilityName"));
-		offDetail.setMaxCount(sabaResponse.get("maxCount"));
-		offDetail.setEndDate(sabaResponse.get("endDate"));
-		offDetail.setStudCount(sabaResponse.get("studCount"));
-		offDetail.setPoNumber(sabaResponse.get("poNumber"));
-		offDetail.setSessions(sessions);
-		offDetail.setStatus(sabaResponse.get("status"));
-		offDetail.setCouponCode(sabaResponse.get("couponCode"));
-		if(sabaResponse.get("couponCode")!=null && !sabaResponse.get("couponCode").equals(""))
-		{
-			offDetail.setDiscountedPrice(sabaResponse.get("discountedPrice"));
-		}
-		
-		//Instructors
-		List<People> instructors = new ArrayList<People>(); 
-		for(Map.Entry<String, String[]> entry : sabaInstructors.entrySet())
-		{
-			People instructor = new People();
-			instructor.setId(entry.getKey());
-			String[] instrInfo = entry.getValue();
-			instructor.setFirstName(instrInfo[0]);
-			instructor.setLastName(instrInfo[1]);
-			instructor.setUserName(instrInfo[2]);
-			instructors.add(instructor);
-		}
-		offDetail.setInstructors(instructors);
-		
-		return offDetail;
-	}
-	
-	
-	public OfferingDetail getOnlineOfferingDetail(String offeringId) throws Exception
-	{
-		Map<String, String> sabaResponse = getSabaWrapper().getOnlineOfferingDetail(offeringId);
-		
-		OfferingDetail offDetail = new OfferingDetail();
-		setOffDetailFields(sabaResponse, offeringId, offDetail);
-		offDetail.setAvailFrom(sabaResponse.get("availFrom"));
-		offDetail.setDiscFrom(sabaResponse.get("discFrom"));
-		
-		return offDetail;
-	}
-	
-	public OfferingDetail getOfferingDetail(String offeringId) throws Exception
-	{
-		if(offeringId.startsWith("class"))
-		{
-			return getSessionOfferingDetail(offeringId);
-		}
-		else
-		{
-			return getOnlineOfferingDetail(offeringId);
-		}
-	}
-	
-	private void setOffDetailFields(Map<String, String> sabaResponse, String offeringId, OfferingDetail offDetail)
-	{
-		offDetail.setSabaOfferingId(offeringId);
-		offDetail.setOfferingNo(sabaResponse.get("offeringNo"));
-		offDetail.setContactId(sabaResponse.get("contactId"));
-		offDetail.setContactUsername(sabaResponse.get("contactUsername"));
-		offDetail.setOrgId(sabaResponse.get("orgId"));
-		offDetail.setOrgName(sabaResponse.get("orgName"));
-		offDetail.setCourseId(sabaResponse.get("courseId"));
-		offDetail.setCourseName(sabaResponse.get("courseName"));
-		offDetail.setDeliveryTypeName(sabaResponse.get("deliveryTypeName"));
-		offDetail.setPrice(sabaResponse.get("price"));
-		offDetail.setPoId(sabaResponse.get("poId"));
-	}
-	
-	
-	public String getRegistrationDeeplinkUri(String offeringId) throws SabaException
-	{
-		SabaWrapper sabaWrapper = new SabaWrapper();
-		return sabaWrapper.getRegistrationDeeplinkUri(offeringId);
-	}
-	
 	
 	public Map<String, String> generateSignature(String merchantId, Map<String, String> paramsToSign) 
 	{
-		SabaWrapper sabaWrapper = new SabaWrapper();
+		SabaRESTAPIWrapper sabaWrapper = new SabaRESTAPIWrapper();
 		return sabaWrapper.generateSignature(merchantId, paramsToSign);
 	
 	}
@@ -5997,8 +5631,8 @@ public class SabaHelper {
 		return newCourseRecordList;
 	}
 
-	public  com.arc.instructor.SabaWrapper getSabaWrapper() {
-		return new SabaWrapper();
+	public  SabaRESTAPIWrapper getSabaWrapper() {
+		return new SabaRESTAPIWrapper();
 	}
 	
 	

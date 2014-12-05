@@ -24,7 +24,6 @@ import com.arc.instructor.model.CourseRecord;
 import com.arc.instructor.model.User;
 import com.arc.instructor.utils.DropDown;
 import com.arc.instructor.utils.SabaHelper;
-import com.saba.exception.SabaException;
 
 @Controller
 @RequestMapping(value={"/coupon"})
@@ -70,7 +69,7 @@ public class CouponController {
         Map<String, String> sabaResponse = new HashMap<String, String>();
         try {
             sabaResponse = getSabaHelper().getSabaWrapper().findCRS(crsID);
-        } catch (SabaException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //System.out.println("SabaHelper processCoupon sabaResponse " + sabaResponse);
