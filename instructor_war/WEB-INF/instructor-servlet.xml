@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>       
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:component-scan base-package="com.arc.instructor.controller" />
+	
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename"><value>messages</value></property>
+    </bean>
+    
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="authenticationInterceptor" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="interceptorHandler" class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="authenticationInterceptor" />
+			</list>
+		</property>
+	</bean>
+		
+	<bean id="authenticationInterceptor"  class="com.arc.instructor.controller.AuthenticationInterceptor"/>
+	
+	<bean id="user" class="com.arc.instructor.model.User" />
+	
+	<bean id="people" class="com.arc.instructor.model.People" />
+
+    <bean id="courseRecord" class="com.arc.instructor.model.CourseRecord" />
+
+    <bean id="courseRecordSearch" class="com.arc.instructor.model.CourseRecordSearch" />
+          
+    <bean id="statistics" class="com.arc.instructor.model.Statistics" />
+    
+    <bean id="payment" class="com.arc.instructor.model.Payment" />
+    
+    <bean id="courseRecordList" class="com.arc.instructor.model.CourseRecordList" />
+    
+     <bean id="courseComponent" class="com.arc.instructor.model.CourseComponent" />
+    
+    <bean id="sessionValidator" class="com.arc.instructor.utils.SessionValidator"/>
+    
+    <bean id="courseValidator" class="com.arc.instructor.utils.CourseValidator"/>
+    
+    <bean id="paymentValidator" class="com.arc.instructor.utils.PaymentValidator"/>
+
+    <bean id="studentValidator" class="com.arc.instructor.utils.StudentValidator"/>
+    
+    
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass"><value>org.springframework.web.servlet.view.JstlView</value></property>
+        <property name="prefix"><value>/WEB-INF/jsp/</value></property>
+        <property name="suffix"><value>.jsp</value></property>
+    </bean>
+</beans>

@@ -1,0 +1,154 @@
+
+.contentinfo {
+    margin: 25px auto;
+    padding: 25px;
+    width: 968px;
+}
+
+.arrow-item:after {
+    clear: both;
+    content: ".";
+    display: block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+}
+.image-topic-box .box-header h1 {
+    color: #333333;
+    font-family: "StandardCTLight",Arial,Helvetica,sans-serif;
+    font-size: 21px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 23px;
+}
+.image-topic-box .arrow-item {
+    font-weight: normal;
+    padding-bottom: 0;
+}
+.arrow-item.first {
+    border-top: medium none;
+    padding-top: 0;
+}
+.arrow-item {
+    border-color: #D5D5D5;
+    border-style: dotted;
+    border-width: 1px 0 0;
+    padding: 14px 0 16px;
+}
+header h1 {
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    font-size: 26px;
+    line-height: 32.5px;
+    margin-bottom: 13px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+}
+
+.image-topic-box .box-image-wrap {
+  padding: 0 0 14px;
+}
+
+.image-topic-box .box-header {
+  padding: 0 0 6px;
+}
+
+.image-topic-box .box-header mark {
+  background: none;
+  color: #333333;
+  font-weight: bold;
+}
+
+.image-topic-box .box-header h1 {
+  color: #333333;
+  font-family: "StandardCTLight", Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 21px;
+  line-height: 23px;
+}
+
+.image-topic-box .box-header a {
+  color: #333333;
+}
+
+.image-topic-box .arrow-item {
+  font-weight: normal;
+  padding-bottom: 0;
+}
+
+.box-image {
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 0 0 4px lightgrey;
+    display: inline;
+    float: left;
+    padding: 6px;
+    position: relative;
+}
+
+.box-image img {
+  	display: inline;
+  	float: left;
+}
+
+a img {
+  	border: none;
+}
+
+.arrow-item.first {
+  border-top: none;
+  padding-top: 0;
+}
+
+.arrow {
+  display: inline;
+  float: left;
+  background: transparent url('../images/sprite/icon/bullet-header.png') no-repeat scroll 0 4px;
+  color: #333333;
+  display: block;
+  font-size: 21px;
+  line-height: 25px;
+  padding: 0px 0px 0px 26px;
+}
+		
+		
+/* 15.VENDOR-SPECIFIC
+------------------------------------------------------------------------- */
+
+body {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+
+a:link {
+  -webkit-tap-highlight-color: #b4d5ff;
+}
+
+
+::-webkit-selection {
+  background: #b4d5ff;
+  color: #333333;
+  text-shadow: none;
+}
+
+
+::-moz-selection {
+  background: #b4d5ff;
+  color: #333333;
+  text-shadow: none;
+}
+
+
+::selection {
+  background: #b4d5ff;
+  color: #333333;
+  text-shadow: none;
+}
